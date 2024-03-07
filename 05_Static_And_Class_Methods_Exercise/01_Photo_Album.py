@@ -1,6 +1,6 @@
 from math import ceil
 from typing import List
-
+  
 
 class PhotoAlbum:
     PHOTOS_PER_PAGE: int = 4

@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 
 
 class IEmail(object):
-    __metaclass__ = ABCMeta
+    __metaclass__ = ABCMeta 
 
     @abstractmethod
     def set_sender(self, sender):

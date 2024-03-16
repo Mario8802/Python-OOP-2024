@@ -10,6 +10,12 @@
 
 - [Static And Class Methods](https://forms.gle/eTrbAFr3SA2ohh3q8)
 
+- [Polymorphism and Abstraction](https://forms.gle/9ArSM52FqWugHm7V8)
+
+- [SOLID](https://forms.gle/AhW2e1hJnySE45KL9)
+
+- [Iterators And Generators](https://forms.gle/c2GM6FsSRhAc3eyB8)
+
 ---
 
 # Plans
@@ -172,4 +178,224 @@
    ```
       
    ---
+
+### 06. Polymorphism and Abstraction
+
+1. Полиморфизъм
+   - Poly(много) - morphism(форми)
+   - Пример в програмирането, когато два производни класа имат един и същи метод реализиран по различен начин
+   ```py
+   class Eagle(Bird):
+      def fly(self):
+         print("I fly only forward")
+
+   class Hummingbird(Bird):
+      def fly(self):
+         print("I fly in all directions")
+   ```
+
+2. Method Overloading
+   - Когато променяме поведението на методи и оператори използвайки магически методи
+   - __len__
+   - __add__
+   - __mul__
+   - __truediv__
+   - __floordiv__
+   - __pow__
+   - __eq__
+   - __ne__
+   - and so on...
+  
+3. Duck Typing
+   - Когато не се интересуваме от типа на обекта, а от това дали той има методите, които искаме
+
+4. Abstraction
+   - Да кажем какво прави нещо, без да казваме как го прави
+   - В ООП това често се отнася към това да изнесем оща логика в бащини или mixin класове
+
+5. Абстрактни класове
+   - Класове, които не се инстанцират и служат като шаблон за наследяващите ги класове
+   ```py
+   from abc import ABC, abstractmethod
+
+   class Shape(ABC):
    
+      @abstractmethod  # задължава наследяващите класове да имплементират този метод 
+      def area(self):
+         pass
+
+      @abstractmethod  # задължава наследяващите класове да имплементират този метод 
+      def perimeter(self):
+         pass
+   ```
+
+---
+
+### 07. SOLID
+
+**S** - Single Responsibility
+**O** - Open/Closed
+**L** - Liskov Substitution
+**I** - Interface Segregation
+**D** - Dependency Inversion
+
+1. Single Responsibility
+   - Всеки метод/функция трябва да прави точно едно нещо
+
+2. Open Closed
+   - Трябва така да пишем кода си, че той да бъде заторен за модифициране, но отворен за разширение
+   - Тоест, когато имаме нова логика, да не трябва да променяме старата, а просто да я добавим
+
+3. Liskov Substitution
+   - "Децата трябва да бъдат подходящи за родителите"
+   ```py
+   from abc import ABC, abstractmethod
+
+
+   class Notification(ABC):
+       @abstractmethod
+       def notify(self, message, email):
+           pass
+   
+   class Email(Notification):
+       def notify(self, message, email):
+           print(f'Send {message} to {email}')
+   
+   class SMS(Notification):
+       def notify(self, message, phone):  # notify метода получава параметър телефон, вместо имейл, което прави класа неподходящ наследник
+           print(f'Send {message} to {phone}')
+   ```
+
+   Решението:
+
+   ```py
+   
+   class Notification(ABC):
+       @abstractmethod
+       def notify(self, message):
+           pass
+
+   class Email(Notification):
+       def __init__(self, email):
+           self.email = email
+   
+       def notify(self, message):
+           print(f'Send "{message}" to {self.email}')
+   
+   
+   class SMS(Notification):
+       def __init__(self, phone):
+           self.phone = phone
+   
+       def notify(self, message):
+           print(f'Send "{message}" to {self.phone}')
+   ```
+
+4. Interface segregation
+   - Не трябва да задължаваме класовете ни да имплементират методи, които не ползваме
+
+5. Dependency Inversion
+   - Разчитаме на абстракция, а не на конкретна имплементация
+
+   ```py
+      from abc import ABC, abstractmethod
+   
+      class LoggerInterface(ABC):
+          @abstractmethod
+          def log(self, message):
+              pass
+      
+      class Logger(LoggerInterface):  # Наследяваме Абстрактния клас, за да можем да разчитаме на абстракцията да ни задължи да имплементираме нужните методи
+          def log(self, message):
+              with open('log.txt', 'a') as f:
+                  f.write(message + '\n')
+      
+      class Calculator:
+          def __init__(self, logger: LoggerInterface):
+              self.logger = logger
+      
+          def add(self, x, y):
+              result = x + y
+              self.logger.log(f"Added {x} and {y}, result = {result}")
+              return result
+   ```
+
+6. Dependency Injection
+   - Когато подадем на метод инсанция на обект от друг клас, за да може тя да свърши нужната работа
+---
+
+### 08. Iterators And Generators
+
+1. Какво е итератор?
+   - Обект през, който можем да итерираме
+   - Връща един елемент на всяка итерация
+   - Имплементира итератор протокола, а именно да има __iter__ и __next__ методите в себе си.
+   - В __iter__ метода връщаме обекта, през който ще итерираме; Метода се извиква само веднъж при започване на цикъл.
+   - В __next__ метода връщаме елемент от обекта, през който итерираме - изпълнява се на всяка итерация.
+  
+2. Какво е генератор?
+   - Функция, която връща итератор
+   - Съдържа думата **yield**, която връща стойност както **return**, но също така запазва стейта на функцията.
+   - Можем да създаваме генератори чрез фунцкии и чрез компрехеншъни.
+   ```py
+   (x ** 2 for x in range(10)
+   ```
+
+---
+
+### 09. Decorators
+
+1. Какво е декоратор
+   - Функция, която обгражда друга функция и я получава като параметър
+   ```py
+   def print_result_in_brackets(func):  # Тази функция приема функцията под нея като параметъ и я заменя с wrapper фунцкията ни
+      def wrapper(*args, **kwargs):
+         result = func(*args, **kwargs)
+         print(f"({result})")  # връщаме резултата обграден от скоби
+
+      return wrapper
+
+   # Usage
+   @print_result_in_brackets
+   def get_hi():
+      return "Hi"
+
+   get_hi()  # (Hi)
+   ```
+
+2. Декоратор с параметър
+   ```py
+      def print_result_in_brackets(brackets)  # Tази фунцкия приема аргументите на декоратора
+         def decorator(func):  # Тази функция приема функцията под нея като параметъ и я заменя с wrapper фунцкията ни
+            def wrapper(*args, **kwargs):
+               result = func(*args, **kwargs)
+               print(f"{brackets[0]}{result}{brackets[1]}")  # връщаме резултата обграден от скоби
+   
+         return wrapper
+      return decorator
+
+      @print_result_in_brackets("[]")
+      def get_hi():
+         return "Hi"
+   
+      get_hi()  # [Hi]
+   ```
+
+3. Class decorator
+   ```py
+   class func_logger:
+      _logfile = 'out.log'
+
+      def __init__(self, func):
+         self.func = func
+
+      def __call__(self, *args):
+         log_string = self.func.__name__ + " was called"
+
+         with open(self._logfile, 'a') as opened_file:
+            opened_file.write(log_string + '\n')
+
+         return self.func(*args)
+   ```
+   
+---

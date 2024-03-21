@@ -16,6 +16,8 @@
 
 - [Iterators And Generators](https://forms.gle/c2GM6FsSRhAc3eyB8)
 
+- [Decorators](https://forms.gle/5WEUAUmfKneqv8th7)
+
 ---
 
 # Plans
@@ -398,4 +400,27 @@
          return self.func(*args)
    ```
    
+---
+
+### 10. Testing 
+
+1. Видове тестване
+   - Manual
+   - Automated
+     - Unit
+     - Integration
+     - E2E
+     ...
+
+2. Какво е unit тестване?
+  - Тестване на най-малката единица код (част от функция или функция)
+
+3. Термини
+  - Test fixture
+  - Test case - един тестов случай
+  - Test suite - колекция от тест кейсове
+  - Test runner - 
+
+
+
 ---

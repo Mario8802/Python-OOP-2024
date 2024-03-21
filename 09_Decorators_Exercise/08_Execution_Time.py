@@ -59,3 +59,26 @@ def concatenate(strings):
 
 print(concatenate(["a" for i in range(100_000_000)]))
 
+
+# import time
+
+
+# def timer(func):
+#     def wrapper(*args, **kwargs):
+#         start_time = time.time()
+#         result = func(*args, **kwargs)
+#         end_time = time.time()
+#         print(f"Function {func.__name__!r} took: {end_time - start_time:.2f} seconds")
+#         return result
+
+#     return wrapper
+
+# @timer
+# def example_function(n):
+#     return f"The sun is {sum(range(n))}"
+
+
+# example_function = timer(example_function)
+
+
+# print(example_function(1000000000))
